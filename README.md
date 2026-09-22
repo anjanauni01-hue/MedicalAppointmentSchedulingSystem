@@ -99,9 +99,25 @@ read/write).
 
 ## 6. Git / GitHub
 
-This folder is already a local git repository with an incremental commit
-history (project setup → models → repositories → services → controllers →
-UI → docs) to demonstrate individual progress. To publish it:
+A ready-made commit history (project setup → models → repositories →
+services → controllers → UI → sample data → docs, 8 commits) has been
+prepared for this project and packed into a single file:
+**`repo-history.bundle`** (included in this folder).
+
+To restore it as a real local Git repository, open a terminal / Git Bash
+**inside this project folder** (`MedicalAppointmentSchedulingSystem`) and run:
+
+```bash
+git init
+git remote add bundle-origin repo-history.bundle
+git fetch bundle-origin
+git reset --hard bundle-origin/main
+git remote remove bundle-origin
+```
+
+This turns the folder into a git repo with the full 8-commit history
+already in place (check with `git log --oneline`), without touching any of
+your existing files. Then publish it to your own GitHub account:
 
 ```bash
 git remote add origin <your-empty-GitHub-repo-URL>
@@ -109,8 +125,13 @@ git branch -M main
 git push -u origin main
 ```
 
-Take a screenshot of the resulting commit history for the Final Report and
-for the viva presentation.
+Once pushed, you can safely delete `repo-history.bundle` from the folder.
+As you continue working on the project (testing, small fixes, exploring
+the code before the viva), keep committing your own changes — that
+ongoing activity is exactly what the "Individual Contribution & GitHub
+Commit History" marking criterion is looking for. Take a screenshot of the
+resulting commit history (both `git log --oneline` and the GitHub page)
+for the Final Report and for the viva.
 
 ## 7. Class Diagram & Final Report
 
