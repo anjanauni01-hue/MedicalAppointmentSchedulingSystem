@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Appointments - MASS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Appointments</h2>
+        <a th:href="@{/appointments/new}" class="btn btn-warning">+ Book Appointment</a>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div class="card p-3">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Type</th>
+                <th>Mode Details</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="appt : ${appointments}">
+                <td th:text="${appt.id}"></td>
+                <td th:text="${appt.patient.fullName}"></td>
+                <td th:text="${'Dr. ' + appt.doctor.fullName}"></td>
+                <td th:text="${appt.appointmentDate}"></td>
+                <td th:text="${appt.appointmentTime}"></td>
+                <td>
+                    <span class="badge"
+                          th:classappend="${appt.appointmentType == 'ONLINE'} ? 'bg-info' : 'bg-secondary'"
+                          th:text="${appt.appointmentType}"></span>
+                </td>
+                <td th:text="${appt.modeDetails}"></td>
+                <td>
+                    <span class="badge badge-status"
+                          th:classappend="${appt.status.name() == 'PENDING'} ? 'bg-warning text-dark' :
+                                          (${appt.status.name() == 'CONFIRMED'} ? 'bg-primary' :
+                                          (${appt.status.name() == 'COMPLETED'} ? 'bg-success' : 'bg-danger'))"
+                          th:text="${appt.status}"></span>
+                </td>
+                <td class="text-end">
+                    <a th:href="@{/appointments/view/{id}(id=${appt.id})}" class="btn btn-sm btn-outline-info">View</a>
+                    <a th:href="@{/appointments/status/{id}/CONFIRMED(id=${appt.id})}" class="btn btn-sm btn-outline-primary">Confirm</a>
+                    <a th:href="@{/appointments/status/{id}/COMPLETED(id=${appt.id})}" class="btn btn-sm btn-outline-success">Complete</a>
+                    <a th:href="@{/appointments/status/{id}/CANCELLED(id=${appt.id})}" class="btn btn-sm btn-outline-warning">Cancel</a>
+                    <a th:href="@{/appointments/delete/{id}(id=${appt.id})}" class="btn btn-sm btn-outline-danger"
+                       onclick="return confirm('Delete this appointment?');">Delete</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(appointments)}">
+                <td colspan="9" class="text-center text-muted py-4">No appointments found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="mt-5">SE1020 - Object Oriented Programming | Medical Appointment Scheduling System</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
